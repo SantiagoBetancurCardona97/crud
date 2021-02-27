@@ -1,6 +1,6 @@
 import React,{useState, useEffect} from 'react'
 import {isEmpty, size} from 'lodash'
-import {addDocument, getCollection, updateDocument } from './actions'
+import {addDocument, deleteDocument, getCollection, updateDocument } from './actions'
 
 
 function App() {
@@ -64,7 +64,13 @@ function App() {
   setId("")
  }
 
- const deleteTask =(id) => {
+ const deleteTask = async(id) => {
+   const result = await deleteDocument("tasks", id)
+   if(!result.statusResponse){
+     setError(result.error)
+     return
+   }
+
    const filtererTask = tasks.filter(task => task.id !== id)
    setTasks(filtererTask)
  }
